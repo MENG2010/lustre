@@ -81,6 +81,7 @@ public class ObservedVisitorHelper {
 		return subTrees;
 	}
 
+	//TODO: build sequential trees
 	public List<ObservedTree> buildSequentialTrees() {
 		List<ObservedTree> seqTrees = new ArrayList<ObservedTree>();
 		

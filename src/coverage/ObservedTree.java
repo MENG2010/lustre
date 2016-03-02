@@ -45,4 +45,7 @@ public class ObservedTree {
             traverse(data, list);
         }
     }
+    
+    //TODO:traverse the sub-tree BFS
+    
 }

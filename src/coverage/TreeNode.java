@@ -51,6 +51,8 @@ public class TreeNode {
         this.data = data;
     }
     
+    
+    //TODO: represent the node in a new way
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
