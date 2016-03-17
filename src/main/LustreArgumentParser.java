@@ -42,6 +42,9 @@ public final class LustreArgumentParser {
 	private Options getOptions() {
 		Options options = new Options();
 		options.addOption(HELP, false, "print this message");
+		/*
+		 * Add "omcdc". Meng
+		 */
 		options.addOption(COVERAGE, true,
 				"generate coverage obligations (mcdc, branch, condition, decision)");
 		options.addOption(POLARITY, true,

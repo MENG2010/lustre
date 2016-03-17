@@ -56,6 +56,28 @@ public final class ExprTypeVisitor implements ExprVisitor<Type> {
 		populateEnumValueTable(program.types);
 		populateConstantTable(program.constants);
 		nodeTable.putAll(Util.getNodeTable(program.nodes));
+//		System.out.println(">>>>>>> ExprTypeVisitor <<<<<<<<<<");
+//		System.out.println("TypeTable >>>>");
+//		for (String key : typeTable.keySet()) {
+//			System.out.println(key + " : " + typeTable.get(key));
+//		}
+//		System.out.println("ConstantTable >>>>");
+//		for (String key : constantTable.keySet()) {
+//			System.out.println(key + " : " + constantTable.get(key));
+//		}
+//		System.out.println("EnumValueTable >>>>");
+//		for (String key : enumValueTable.keySet()) {
+//			System.out.println(key + " : " + enumValueTable.get(key));
+//		}
+//		System.out.println("VariableTable >>>>");
+//		for (String key : variableTable.keySet()) {
+//			System.out.println(key + " : " + variableTable.get(key));
+//		}
+//		System.out.println("NodeTable >>>>");
+//		for (String key : nodeTable.keySet()) {
+//			System.out.println(key + " : " + nodeTable.get(key));
+//		}
+//		System.out.print(">>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
 	}
 
 	private void populateTypeTable(List<TypeDef> typeDefs) {
