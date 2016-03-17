@@ -15,6 +15,7 @@ public final class Obligation {
 	protected final String condition;
 	// Polarity of the current condition
 	protected final boolean polarity;
+//	protected boolean polarity;
 	// The obligation as an expression
 	protected Expr obligation;
 	// Polarity of the expression that uses the current condition
@@ -30,6 +31,10 @@ public final class Obligation {
 		this.obligation = obligation;
 		this.expressionPolarity = polarity;
 	}
+	
+//	public Obligation(Expr condition) {
+//		this.condition = condition.toString();
+//	}
 
 	// Create a variable for an arithmetic expression
 	private String createArithVar(Expr expr) {

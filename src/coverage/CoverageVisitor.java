@@ -32,11 +32,14 @@ public class CoverageVisitor implements ExprVisitor<List<Obligation>> {
 	public CoverageVisitor(ExprTypeVisitor exprTypeVisitor) {
 		this.exprTypeVisitor = exprTypeVisitor;
 	}
+	
 
 	@Override
 	public List<Obligation> visit(ArrayAccessExpr expr) {
 		List<Obligation> currentObs = new ArrayList<Obligation>();
-
+		
+//		System.out.println("ArrayAccessExpr >>> " + expr.toString());
+		
 		currentObs.addAll(expr.array.accept(this));
 		currentObs.addAll(expr.index.accept(this));
 
@@ -46,7 +49,7 @@ public class CoverageVisitor implements ExprVisitor<List<Obligation>> {
 	@Override
 	public List<Obligation> visit(ArrayExpr expr) {
 		List<Obligation> currentObs = new ArrayList<Obligation>();
-
+//		System.out.println("ArrayExpr >>> " + expr.toString());
 		for (Expr e : expr.elements) {
 			currentObs.addAll(e.accept(this));
 		}
@@ -57,7 +60,7 @@ public class CoverageVisitor implements ExprVisitor<List<Obligation>> {
 	@Override
 	public List<Obligation> visit(ArrayUpdateExpr expr) {
 		List<Obligation> currentObs = new ArrayList<Obligation>();
-
+//		System.out.println("ArrayUpdateExpr >>> " + expr.toString());
 		currentObs.addAll(expr.array.accept(this));
 		currentObs.addAll(expr.index.accept(this));
 		currentObs.addAll(expr.value.accept(this));
@@ -68,7 +71,7 @@ public class CoverageVisitor implements ExprVisitor<List<Obligation>> {
 	@Override
 	public List<Obligation> visit(BinaryExpr expr) {
 		List<Obligation> currentObs = new ArrayList<Obligation>();
-
+//		System.out.println("BinaryExpr >>> " + expr.toString());
 		List<Obligation> leftObs = expr.left.accept(this);
 		List<Obligation> rightObs = expr.right.accept(this);
 
@@ -92,16 +95,19 @@ public class CoverageVisitor implements ExprVisitor<List<Obligation>> {
 
 	@Override
 	public List<Obligation> visit(BoolExpr expr) {
+//		System.out.println("BoolExpr >>> " + expr.toString());
 		return new ArrayList<Obligation>();
 	}
 
 	@Override
 	public List<Obligation> visit(CastExpr expr) {
+//		System.out.println("CastExpr >>> " + expr.toString());
 		return expr.expr.accept(this);
 	}
 
 	@Override
 	public List<Obligation> visit(CondactExpr expr) {
+//		System.out.println("CondactExpr >>> " + expr.toString());
 		List<Obligation> currentObs = new ArrayList<Obligation>();
 
 		currentObs.addAll(expr.clock.accept(this));
@@ -116,11 +122,13 @@ public class CoverageVisitor implements ExprVisitor<List<Obligation>> {
 
 	@Override
 	public List<Obligation> visit(IdExpr expr) {
+//		System.out.println("IdExpr >>> " + expr.toString());
 		return new ArrayList<Obligation>();
 	}
 
 	@Override
 	public List<Obligation> visit(IfThenElseExpr expr) {
+//		System.out.println("IfThenElseExpr >>> " + expr.toString());
 		List<Obligation> currentObs = new ArrayList<Obligation>();
 
 		currentObs.addAll(expr.cond.accept(this));
@@ -148,11 +156,13 @@ public class CoverageVisitor implements ExprVisitor<List<Obligation>> {
 
 	@Override
 	public List<Obligation> visit(IntExpr expr) {
+//		System.out.println("IntExpr >>> " + expr.toString());
 		return new ArrayList<Obligation>();
 	}
 
 	@Override
 	public List<Obligation> visit(NodeCallExpr expr) {
+//		System.out.println("NodeCallExpr >>> " + expr.toString());
 		List<Obligation> currentObs = new ArrayList<Obligation>();
 
 		for (Expr e : expr.args) {
@@ -164,11 +174,13 @@ public class CoverageVisitor implements ExprVisitor<List<Obligation>> {
 
 	@Override
 	public List<Obligation> visit(RealExpr expr) {
+//		System.out.println("RealExpr >>> " + expr.toString());
 		return new ArrayList<Obligation>();
 	}
 
 	@Override
 	public List<Obligation> visit(RecordAccessExpr expr) {
+//		System.out.println("RecordAccessExpr >>> " + expr.toString());
 		List<Obligation> currentObs = new ArrayList<Obligation>();
 
 		currentObs.addAll(expr.record.accept(this));
@@ -178,6 +190,7 @@ public class CoverageVisitor implements ExprVisitor<List<Obligation>> {
 
 	@Override
 	public List<Obligation> visit(RecordExpr expr) {
+//		System.out.println("RecordExpr >>> " + expr.toString());
 		List<Obligation> currentObs = new ArrayList<Obligation>();
 
 		for (Expr e : expr.fields.values()) {
@@ -189,6 +202,7 @@ public class CoverageVisitor implements ExprVisitor<List<Obligation>> {
 
 	@Override
 	public List<Obligation> visit(RecordUpdateExpr expr) {
+//		System.out.println("RecordUpdateExpr >>> " + expr.toString());
 		List<Obligation> currentObs = new ArrayList<Obligation>();
 
 		currentObs.addAll(expr.record.accept(this));
@@ -199,6 +213,7 @@ public class CoverageVisitor implements ExprVisitor<List<Obligation>> {
 
 	@Override
 	public List<Obligation> visit(TupleExpr expr) {
+//		System.out.println("TupleExpr >>> " + expr.toString());
 		List<Obligation> currentObs = new ArrayList<Obligation>();
 
 		for (Expr e : expr.elements) {
@@ -210,6 +225,7 @@ public class CoverageVisitor implements ExprVisitor<List<Obligation>> {
 
 	@Override
 	public List<Obligation> visit(UnaryExpr expr) {
+//		System.out.println("UnaryExpr >>> " + expr.toString());
 		List<Obligation> currentObs = new ArrayList<Obligation>();
 
 		List<Obligation> unaryObs = expr.expr.accept(this);

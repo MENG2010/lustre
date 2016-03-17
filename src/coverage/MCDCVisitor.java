@@ -13,7 +13,7 @@ import jkind.lustre.UnaryOp;
 /**
  * Generate obligations for MC/DC
  */
-public final class MCDCVisitor extends ConditionVisitor {
+ public final class MCDCVisitor extends ConditionVisitor {
 	public MCDCVisitor(ExprTypeVisitor exprTypeVisitor) {
 		super(exprTypeVisitor);
 	}

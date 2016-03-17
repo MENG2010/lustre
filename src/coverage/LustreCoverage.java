@@ -6,8 +6,10 @@ import enums.Coverage;
 import enums.Polarity;
 import main.LustreMain;
 import types.ExprTypeVisitor;
+import jkind.lustre.Constant;
 import jkind.lustre.Equation;
 import jkind.lustre.IdExpr;
+import jkind.lustre.IntExpr;
 import jkind.lustre.NamedType;
 import jkind.lustre.Node;
 import jkind.lustre.Program;
@@ -46,13 +48,14 @@ public final class LustreCoverage {
 
 	private Program generate() {
 		String coverageType = coverage.name();
-
+		
 		LustreMain.log("------------Generating " + coverageType
 				+ " obligations");
 
 		ProgramBuilder builder = new ProgramBuilder();
 		builder.addConstants(this.program.constants)
 				.addTypes(this.program.types).setMain(this.program.main);
+		
 		for (Node node : this.program.nodes) {
 			builder.addNode(this.generate(node));
 		}
@@ -64,7 +67,6 @@ public final class LustreCoverage {
 	// Generate obligations for a node
 	private Node generate(Node node) {
 		LustreMain.log("Node: " + node.id);
-
 		NodeBuilder builder = new NodeBuilder(node);
 
 		CoverageVisitor coverageVisitor = null;
@@ -84,11 +86,21 @@ public final class LustreCoverage {
 		case DECISION:
 			coverageVisitor = new DecisionVisitor(exprTypeVisitor);
 			break;
+		case OMCDC: // for OMCDC coverage. Meng
+			coverageVisitor = new OMCDCVisitor(exprTypeVisitor, program.nodes); 
+			break;
+		case OBRANCH:
+			break;
+		case OCONDITION:
+			break;
+		case ODECISION:
+			break;
 		default:
 			throw new IllegalArgumentException("Unknown coverage: " + coverage);
 		}
-
+		
 		// Start generating obligations
+		// non-observed & comb_used_by obligations
 		for (Equation equation : node.equations) {
 			String id = null;
 
@@ -118,18 +130,47 @@ public final class LustreCoverage {
 					continue;
 				}
 
-				String property = obligation.condition + "_"
+				String property = "";
+				if (coverage == coverage.OMCDC) {
+					// name pattern for OMCDC. Meng
+					count++; // counting obligations
+					property = obligation.condition + "_COMB_USED_BY_" + id;
+					builder.addEquation(new Equation(new IdExpr(property), obligation.obligation));
+				} else {
+					// keep the rest in original pattern.
+					property = obligation.condition + "_"
 						+ (obligation.polarity ? "TRUE" : "FALSE") + "_AT_"
 						+ id + "_" + coverage.name() + "_"
 						+ (obligation.expressionPolarity ? "TRUE" : "FALSE")
 						+ "_" + (count++);
+					
+					builder.addEquation(new Equation(new IdExpr(property),
+							new UnaryExpr(UnaryOp.NOT, obligation.obligation)));
+				}
 
 				builder.addLocal(new VarDecl(property, NamedType.BOOL));
-				builder.addEquation(new Equation(new IdExpr(property),
-						new UnaryExpr(UnaryOp.NOT, obligation.obligation)));
 				builder.addProperty(property);
 			}
 		}
+		
+		if (coverage == coverage.OMCDC) {
+			// obligations for observed coverage only. Meng
+			String property = "";
+			
+			List<Obligation> obligations = ((OMCDCVisitor) coverageVisitor).generate();
+			count += obligations.size();
+			builder.addInput(new VarDecl("token_nondet", new NamedType("subrange[1,4] of int")));
+			builder.addInput(new VarDecl("token_init", NamedType.BOOL));
+			
+			for (Obligation obligation : obligations) {
+				property = obligation.condition;
+				builder.addEquation(new Equation(new IdExpr(property), obligation.obligation));
+				builder.addLocal(new VarDecl(property, NamedType.BOOL));
+				builder.addProperty(property);
+			}
+			
+		}
+		
 		return builder.build();
 	}
 }
